@@ -21,6 +21,18 @@ Build the upload zip from the repo root: `zip -r ai-post-o-matic.zip ai-post-o-m
 Install: Plugins → Add New → Upload Plugin → Replace current (keeps saved settings).
 Non-200 Anthropic responses surface the API's error message in the UI (e.g. retired model, bad key).
 
+## Features (v2.0.2)
+- Post generator: topic in, 600–1000 word HTML post out
+- Post editor: editable title, excerpt, content with Preview/HTML tabs
+- Category dropdown (from WP categories)
+- Publish date/time picker: schedule or backdate; blank = publish now
+- Draft / Publish toggle
+- SEO panel: slug validator, meta title + description with character counters, focus keyword; stays visible after save
+- Yoast auto-fill on save
+- Pexels image picker: auto-searches AI image keywords, 6-photo grid, sets featured image
+- Business Profile settings feed the system prompt (per-client voice)
+- View-post link opens in a new tab
+
 ## File Structure
 ```
 ai-post-o-matic/
@@ -133,3 +145,20 @@ When a post is saved, the plugin writes directly to Yoast's post meta fields:
 - Server blocks loopback HTTP requests — never use `wp_remote_post` to call your own site's REST API
 - Use native WP functions for all post/media operations
 - Plugin is installed at: `/home/customer/www/uilabs.com/public_html/wp-content/plugins/ai-post-o-matic/`
+
+---
+
+## Coding Constraints
+- The dynamic system prompt uses a PHP heredoc (`<<<PROMPT`) to avoid mixed-quote parse errors. Do not convert it to a double-quoted string.
+
+---
+
+## Known Issues / Deferred
+- **Gemini image generation:** explored and shelved. Needs billing on the Google Cloud project (~$0.039/image). Model `gemini-2.5-flash-image` via `generateContent`. Can be re-added once billing is active.
+- **API keys:** Anthropic and Gemini keys pasted into old chat sessions were treated as compromised and rotated. Never reuse keys from old transcripts; keys live only in WP options.
+
+---
+
+## Changelog
+- **2.0.2** (2026-10-09): model → `claude-sonnet-5-5`; non-200 Anthropic responses show the API's error message instead of "invalid JSON". Source moved into git (github.com/uilabs/ai-post-o-matic).
+- **2.0.1**: baseline imported from the earlier session's zip.
