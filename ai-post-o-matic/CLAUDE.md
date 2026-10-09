@@ -1,7 +1,7 @@
 # AI Post-O-Matic — Claude Code Context
 
 ## Version
-Current version: **2.0.1**
+Current version: **2.0.2**
 ⚠️ **Important:** Increment the version number in the plugin header (`* Version:`) on every build. Use semantic versioning: bump the patch number (2.0.x) for fixes and small additions, minor (2.x.0) for significant new features.
 
 ## Overview
@@ -14,6 +14,12 @@ WordPress plugin that generates SEO-optimized blog posts using the Anthropic Cla
 - **WordPress admin user:** UilabsAdmin
 
 ---
+
+## Source of truth
+Canonical source lives in git at `~/Documents/uilabs/ai-post-o-matic` on Callisto. Edit that file — do NOT rebuild the plugin from scratch.
+Build the upload zip from the repo root: `zip -r ai-post-o-matic.zip ai-post-o-matic -x '*.DS_Store'`
+Install: Plugins → Add New → Upload Plugin → Replace current (keeps saved settings).
+Non-200 Anthropic responses surface the API's error message in the UI (e.g. retired model, bad key).
 
 ## File Structure
 ```
@@ -89,7 +95,7 @@ When a post is saved, the plugin writes directly to Yoast's post meta fields:
 ---
 
 ## AI Model
-- **Model:** `claude-sonnet-4-20250514`
+- **Model:** `claude-sonnet-5-5`
 - **Max tokens:** 4000
 - **API endpoint:** `https://api.anthropic.com/v1/messages`
 - The system prompt is dynamically built from Business Profile settings

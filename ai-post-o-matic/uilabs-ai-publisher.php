@@ -2,7 +2,7 @@
 /**
  * Plugin Name: AI Post-O-Matic
  * Description: AI-powered blog post generator. Generate and publish SEO-optimized posts directly from your WordPress dashboard.
- * Version: 2.0.1
+ * Version: 2.0.2
  * Author: UI Labs LLC
  * Author URI: https://uilabs.com
  */
@@ -802,7 +802,7 @@ For image_keywords: provide 5 specific, descriptive search terms someone could u
 PROMPT;
 
     $payload = json_encode([
-        'model'      => 'claude-sonnet-4-20250514',
+        'model'      => 'claude-sonnet-5-5',
         'max_tokens' => 4000,
         'system'     => $system_prompt,
         'messages'   => [['role' => 'user', 'content' => 'Write a blog post about: ' . $topic]]
@@ -821,6 +821,9 @@ PROMPT;
     if (is_wp_error($response)) wp_send_json_error('API request failed: ' . $response->get_error_message());
 
     $body = json_decode(wp_remote_retrieve_body($response), true);
+    if (wp_remote_retrieve_response_code($response) !== 200) {
+        wp_send_json_error('Anthropic API error: ' . ($body['error']['message'] ?? 'HTTP ' . wp_remote_retrieve_response_code($response)));
+    }
     $text = '';
     foreach (($body['content'] ?? []) as $block) {
         if (isset($block['text'])) $text .= $block['text'];
